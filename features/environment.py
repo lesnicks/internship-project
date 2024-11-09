@@ -1,6 +1,10 @@
+from requests import options
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 
 def browser_init(context):
@@ -10,6 +14,9 @@ def browser_init(context):
     driver_path = ChromeDriverManager().install()
     service = Service(driver_path)
     context.driver = webdriver.Chrome(service=service)
+#    context.driver = webdriver.Chrome(service=service)
+    context.driver = webdriver.Firefox()
+    driver_path = GeckoDriverManager().install()
 
     context.driver.maximize_window()
     context.driver.implicitly_wait(4)
@@ -31,3 +38,23 @@ def after_step(context, step):
 
 def after_scenario(context, feature):
     context.driver.quit()
+
+
+chrome_options = ChromeOptions()
+chrome_options.add_argument("--headless")
+
+
+# options = webdriver.ChromeOptions()
+# options.add_argument('--headless')
+
+# driver = webdriver.Chrome(options=options)
+
+#     options= options
+#     service= service
+#
+# options = Options()
+# options = webdriver.ChromeOptions()
+# options.add_argument('headless')
+# service = Service(GeckoDriverManager().install())
+# service = Service(GeckoDriverManager().install())
+# driver_path = webdriver.Chrome(
