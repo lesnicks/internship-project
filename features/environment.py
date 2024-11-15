@@ -10,21 +10,40 @@ def browser_init(context):
     """
     :param context: Behave context
     """
-#     driver_path = ChromeDriverManager().install()
-#     service = Service(driver_path)
-#     context.driver = webdriver.Chrome(service=service)
-# #    context.driver = webdriver.Chrome(service=service)
-#     context.driver = webdriver.Firefox()
-#     driver_path = GeckoDriverManager().install()
 
+    # ##Chrome##
+    # driver_path = ChromeDriverManager().install()
+    # service = Service(driver_path)
+    # context.driver = webdriver.Chrome(service=service)
 
+    ##Firefox##
+   # driver_path = GeckoDriverManager().install()
+   # service = Service(driver_path)
+   # context.driver = webdriver.Firefox(service=service)
 
-    options = webdriver.ChromeOptions()
-    service = Service(ChromeDriverManager().install())
-    options.add_argument('headless')
-    context.driver = webdriver.Chrome(
-        options=options,
-        service=service )
+    ##Headless##
+    # options = webdriver.ChromeOptions()
+    # service = Service(ChromeDriverManager().install())
+    # options.add_argument('headless')
+    # context.driver = webdriver.Chrome(
+    #     options=options,
+    #     service=service )
+
+    ##BrowserStack##
+    bs_user = 'nickolasles_cCUb9E'
+    bs_key = '3pedC1xAgjLP1XDz9aKz'
+    url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+
+    options = ChromeOptions()
+    bstack_options = {
+        "os" : "Windows",
+        "osVersion" : "11",
+        'browserName': 'Chrome',
+        'browserVersion': '129.0'
+    }
+    options.set_capability('bstack:options', bstack_options)
+    context.driver = webdriver.Remote(command_executor=url, options=options)
+
 
     context.driver.maximize_window()
     context.driver.implicitly_wait(5)
