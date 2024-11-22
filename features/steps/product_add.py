@@ -112,7 +112,7 @@ def verify_info(context):
 
 @then('Verify “Send an application” button is available and clickable')
 def verify_send_application_available_clickable(context):
-    context.driver.find_element(*VERIFY_SEND_AN_APPLICATION)
+    context.driver.find_element(*VERIFY_SEND_AN_APPLICATION).click()
     sleep(5)
 
 
