@@ -4,7 +4,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-
+from selenium.webdriver.chrome.options import Options
 
 def browser_init(context):
     """
@@ -12,9 +12,9 @@ def browser_init(context):
     """
 
     # ##Chrome##
-    driver_path = ChromeDriverManager().install()
-    service = Service(driver_path)
-    context.driver = webdriver.Chrome(service=service)
+    # driver_path = ChromeDriverManager().install()
+    # service = Service(driver_path)
+    # context.driver = webdriver.Chrome(service=service)
 
     ##Firefox##
    # driver_path = GeckoDriverManager().install()
@@ -29,34 +29,35 @@ def browser_init(context):
     #     options=options,
     #     service=service )
     #
+
+
     # ##BrowserStack##
-    # bs_user = 'nickolasles_cCUb9E'
-    # bs_key = '3pedC1xAgjLP1XDz9aKz'
-    # url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
-    #
-    # options = ChromeOptions()
-    # bstack_options = {
-    #     "os" : "Windows",
-    #     "osVersion" : "11",
-    #     'browserName': 'Chrome',
-    #     'browserVersion': '129.0'
-    # }
-    # options.set_capability('bstack:options', bstack_options)
-    # context.driver = webdriver.Remote(command_executor=url, options=options)
+    bs_user = 'nickolasles_cCUb9E'
+    bs_key = '3pedC1xAgjLP1XDz9aKz'
+    url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+
+    options = Options()
+    bstack_options = {
+        'deviceName': 'Samsung Galaxy S22 Ultra',  # Replace with desired device
+        'osVersion': '12',  # Or 'iOS'
+        'browserName': 'chrome',  # Mobile Chrome browser
+        'deviceOrientation': 'portrait',
+    }
+    options.set_capability('bstack:options', bstack_options)
+    context.driver = webdriver.Remote(command_executor=url, options=options)
 
 
-    ##Mobile testing##
-    # mobile_emulation = {
-    #     "deviceName": "Pixel 2"  # Choose a mobile device
-    # }
-    #
-    # options = webdriver.ChromeOptions()
-    # options.add_experimental_option("mobileEmulation", mobile_emulation)
-    #
-    # # Initialize WebDriver with mobile emulation
-    # service = Service(ChromeDriverManager().install())
-    # context.driver = webdriver.Chrome(service=service, options=options)
+    ##Mobile Web testing##
+    mobile_emulation = {
+        "deviceName": "Pixel 2"  # Choose a mobile device
+    }
 
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option("mobileEmulation", mobile_emulation)
+
+    # Initialize WebDriver with mobile emulation
+    service = Service(ChromeDriverManager().install())
+    context.driver = webdriver.Chrome(service=service, options=options)
 
     context.driver.maximize_window()
     context.driver.implicitly_wait(5)

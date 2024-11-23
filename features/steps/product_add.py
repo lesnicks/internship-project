@@ -2,12 +2,16 @@ from selenium.webdriver.common.by import By
 from behave import given, when, then
 from time import sleep
 
-CLICK_SETTING = (By.XPATH, "//div[@class='menu-button-text' and text()='Settings']")
+
 EMAIL = (By.ID, "email-2")
 PASSWORD = (By.ID, 'field')
+CLICK_SETTING = (By.XPATH, "//div[@class='circle-gradient']")
+#(By.XPATH, "//div[@class='menu-button-text' and text()='Settings']")
+CLICK_ADD_PROJECT = (By.CSS_SELECTOR), "body > div.settings-profile-block > div.settings-block-menu > a:nth-child(7)"
+#(By.XPATH, "//a[@href='/add-a-project' and @class='page-button-menu w-inline-block']")
+VERIFY_RIGHT_PAGE_OPENS = (By.CSS_SELECTOR, "body > div.menu-general-block > div.w-layout-blockcontainer.manu-container.w-container > div.menu-text-icon-block > div > a > img")
+#(By.XPATH, "//div[@class='text-img-block']")
 CONTINUE = (By.CSS_SELECTOR, "a.login-button[wized='loginButton']")
-CLICK_ADD_PROJECT = (By.XPATH, "//div[@class='setting-text' and text()='Add a project']")
-VERIFY_RIGHT_PAGE_OPENS = (By.XPATH, "//div[@class='text-img-block']")
 
 NAME = (By.CSS_SELECTOR, "input.input.book.w-input[name='Your-name']")
 COMPANY = (By.CSS_SELECTOR, "input.input.book.w-input[name='Your-company-name']")
@@ -48,18 +52,34 @@ def log_in(context):
 @when('Click on settings option')
 def Click_on_settings_option(context):
     context.driver.find_element(*CLICK_SETTING).click()
-    sleep(5)
+    sleep(6)
 
-
-@then('Click on Add a project')
-def Click_on_Add_project(context):
-    context.driver.find_element(*CLICK_ADD_PROJECT).click()
-    sleep(5)
 
 @then('Verify the right page opens')
 def Verify_page_opens(context):
-    context.driver.find_element(*VERIFY_RIGHT_PAGE_OPENS)
+    context.driver.find_element(*VERIFY_RIGHT_PAGE_OPENS).click()
     sleep(5)
+
+
+# @then('Click on Add a project')
+# def Click_on_Add_project(context):
+#     context.driver.find_element(*CLICK_ADD_PROJECT).click()
+#     sleep(6)
+@then('Click on Add a project')
+def Click_on_Add_project(context):
+    add_project_element = context.driver.find_element(*CLICK_ADD_PROJECT)
+
+    # Scroll to the element
+    context.driver.execute_script("arguments[0].scrollIntoView();", add_project_element)
+
+    # Wait for the page to adjust (optional, can be adjusted depending on timing)
+    sleep(2)
+
+    # Click on the "Add a project" button
+    add_project_element.click()
+
+    # Sleep for any necessary wait after the click (adjust timing as needed)
+    sleep(6)
 
 
 @then('Add some test information to the input fields')
